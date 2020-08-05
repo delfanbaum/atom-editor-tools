@@ -11,4 +11,5 @@
 'atom-text-editor[data-grammar="text html basic"]':
   'cmd-i':	'html:add-emphasis'
   'cmd-b':	'html:add-strong'
+  'cmd-shift-c':  'html:add-code-markup'
   'cmd-shift-k': 'htmlbook:kt-keep-together'
