@@ -11,7 +11,7 @@
 #                                Shared
 ##########################################################################
 
-# Add command-pallet ability to remove all text styles from a selection
+# Add command palette ability to remove all text styles from a selection
 atom.commands.add 'atom-text-editor', 'remove-text-styles', ->
   editor = atom.workspace.getActiveTextEditor()
   scope = editor.getRootScopeDescriptor()
