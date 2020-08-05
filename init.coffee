@@ -129,21 +129,27 @@ formatText = (selection, markup, editor) ->
     if wrapped == "#{markup}#{markup}"
       editor.moveLeft()
     else
-      editor.moveLeft(wrapped.length) # go to beginning of word
-      editor.selectRight(wrapped.length) # select to the end (fix cursor position)
+      editor.moveLeft(wrapped.length) # go to end of word
+      editor.selectRight(wrapped.length)
 
 wrapAdocTag = (selection, tag) ->
-  selection.insertText("[.#{tag}]##{selection.getText()}#")
+  wrapped = "[.#{tag}]##{selection.getText()}#"
+  selection.insertText(wrapped)
+
 
 
 # Generic add class (which you can modify later)
-atom.commands.add 'atom-text-editor', 'asciidoc:add-inline-class-(Generic)', ->
+atom.commands.add 'atom-text-editor', 'asciidoc:add-inline-class', ->
     editor = atom.workspace.getActiveTextEditor()
     scope = editor.getRootScopeDescriptor()
     if `scope  == '.source.asciidoc'`
       selections = editor.getSelections()
       for selection in selections
-        wrapAdocTag(selection, "class")
+        # yes this is the same function as wrapAdocTag
+        wrapped = "[.class]##{selection.getText()}#"
+        selection.insertText(wrapped)
+        editor.moveLeft(wrapped.length - 2)
+        editor.selectRight(5)
 
 # Add a "keep-together" class
 atom.commands.add 'atom-text-editor', 'asciidoc:kt-keep-together', ->

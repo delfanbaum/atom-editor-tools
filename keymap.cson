@@ -6,6 +6,7 @@
 'atom-text-editor[data-grammar="source asciidoc"]':
   'cmd-b':	'asciidoc:toggle-bold'
   'cmd-i':	'asciidoc:toggle-italic'
+  'cmd-shift-c': 'asciidoc:add-inline-class'
   'cmd-shift-k': 'asciidoc:kt-keep-together'
 
 'atom-text-editor[data-grammar="text html basic"]':
