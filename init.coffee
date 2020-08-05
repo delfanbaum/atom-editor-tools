@@ -120,11 +120,16 @@ atom.commands.add 'atom-text-editor', 'htmlbook:section-label-number', ->
 ##########################################################################
 
 # Useful functions
-formatAdocText = (selection, markup) ->
-  if selection.getText().indexOf(markup) is 0 and selection.getText().slice(-1) is markup
+formatAdocText = (selection, markup, editor) ->
+  if selection.getText().slice(0,1) == markup and selection.getText().slice(-1) == markup
     selection.insertText(selection.getText().slice(1,-1))
   else
-    selection.insertText("#{markup}#{selection.getText()}#{markup}")
+    wrapped = "#{markup}#{selection.getText()}#{markup}"
+    selection.insertText(wrapped)
+    if wrapped == "#{markup}#{markup}"
+      editor.moveLeft()
+    else
+      selection.selectWord()
 
 wrapAdocTag = (selection, tag) ->
   selection.insertText("[.#{tag}]##{selection.getText()}#")
@@ -155,7 +160,7 @@ atom.commands.add 'atom-text-editor', 'asciidoc:toggle-italic', ->
   if `scope  == '.source.asciidoc'`
     selections = editor.getSelections()
     for selection in selections
-      formatAdocText(selection, "_")
+      formatAdocText(selection, "_", editor)
 
 # Make text bold
 atom.commands.add 'atom-text-editor', 'asciidoc:toggle-bold', ->
@@ -164,7 +169,7 @@ atom.commands.add 'atom-text-editor', 'asciidoc:toggle-bold', ->
   if `scope  == '.source.asciidoc'`
     selections = editor.getSelections()
     for selection in selections
-      formatAdocText(selection, "*")
+      formatAdocText(selection, "*", editor)
 
 # Make bold, code, or other text italic
 atom.commands.add 'atom-text-editor', 'asciidoc:force-italic', ->
