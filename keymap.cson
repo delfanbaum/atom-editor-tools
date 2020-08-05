@@ -13,7 +13,6 @@
   'cmd-b':	'html:add-strong'
   'cmd-shift-k': 'htmlbook:kt-keep-together'
 
-# uncomment the following if you want them for markdown files, too
 'atom-text-editor[data-grammar="text md"]':
   'cmd-b':	'atom-markdown-wrapper:bold'
   'cmd-i':	'atom-markdown-wrapper:italic'
