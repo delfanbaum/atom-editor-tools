@@ -1,6 +1,6 @@
 # Atom Tools for Editors
 
-Toolset to assist in the editing and creation of text documents in [Atom](https://atom.io/). Current targets include:
+Toolset to assist in the editing and creation of text documents in [Atom](https://atom.io/). Current grammars include:
 
 - Asciidoc
 - HTMLBook
