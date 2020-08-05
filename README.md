@@ -4,6 +4,7 @@ Toolset to assist in the editing and creation of text documents in [Atom](https:
 
 - Asciidoc
 - HTMLBook
+- Markdown (limited to bold/italic/style remover)
 
 **Note:** Right now these are to be added to your atom config files; I may make this a package at some point.
 

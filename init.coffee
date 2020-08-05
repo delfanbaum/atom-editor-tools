@@ -116,11 +116,11 @@ atom.commands.add 'atom-text-editor', 'htmlbook:section-label-number', ->
 
 
 ##########################################################################
-#                              Asciidoc
+#                          Asciidoc/Markdown
 ##########################################################################
 
 # Useful functions
-formatAdocText = (selection, markup, editor) ->
+formatText = (selection, markup, editor) ->
   if selection.getText().slice(0,1) == markup and selection.getText().slice(-1) == markup
     selection.insertText(selection.getText().slice(1,-1))
   else
@@ -157,19 +157,21 @@ atom.commands.add 'atom-text-editor', 'asciidoc:kt-keep-together', ->
 atom.commands.add 'atom-text-editor', 'asciidoc:toggle-italic', ->
   editor = atom.workspace.getActiveTextEditor()
   scope = editor.getRootScopeDescriptor()
-  if `scope  == '.source.asciidoc'`
-    selections = editor.getSelections()
-    for selection in selections
-      formatAdocText(selection, "_", editor)
+  selections = editor.getSelections()
+  for selection in selections
+    formatText(selection, "_", editor)
 
 # Make text bold
 atom.commands.add 'atom-text-editor', 'asciidoc:toggle-bold', ->
   editor = atom.workspace.getActiveTextEditor()
   scope = editor.getRootScopeDescriptor()
-  if `scope  == '.source.asciidoc'`
-    selections = editor.getSelections()
-    for selection in selections
-      formatAdocText(selection, "*", editor)
+  if `scope  == '.text.md'`
+    bold = "**"
+  else
+    bold = "*"
+  selections = editor.getSelections()
+  for selection in selections
+    formatText(selection, bold, editor)
 
 # Make bold, code, or other text italic
 atom.commands.add 'atom-text-editor', 'asciidoc:force-italic', ->
@@ -179,9 +181,8 @@ atom.commands.add 'atom-text-editor', 'asciidoc:force-italic', ->
   regMatch = /\*|`|\+/g # match bold, and fixed-width
   striptext = (selection) ->
     selection.insertText(selection.getText().replace(regMatch, "_"))
-  if `scope  == '.source.asciidoc'`
-    for selection in selections
-      striptext(selection)
+  for selection in selections
+    striptext(selection)
 
 # If you are having trouble with breaking long inline code sections across
 # lines, use this command and replace `&#x2060` with `&#x200b` where you
