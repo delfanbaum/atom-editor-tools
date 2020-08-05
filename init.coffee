@@ -129,8 +129,8 @@ formatText = (selection, markup, editor) ->
     if wrapped == "#{markup}#{markup}"
       editor.moveLeft()
     else
-      editor.moveLeft(wrapped.length) # go to end of word
-      editor.selectRight(wrapped.length)
+      editor.moveLeft(wrapped.length) # go to beginning of word
+      editor.selectRight(wrapped.length) # select to the end (fix cursor position)
 
 wrapAdocTag = (selection, tag) ->
   selection.insertText("[.#{tag}]##{selection.getText()}#")
