@@ -12,7 +12,3 @@
   'cmd-i':	'html:add-emphasis'
   'cmd-b':	'html:add-strong'
   'cmd-shift-k': 'htmlbook:kt-keep-together'
-
-'atom-text-editor[data-grammar="text md"]':
-  'cmd-b':	'atom-markdown-wrapper:bold'
-  'cmd-i':	'atom-markdown-wrapper:italic'
