@@ -1,0 +1,19 @@
+# Add the following to your keymap for convienience
+# The keymap can be found (on a Mac) by selecting Atom -> Keymap...
+# To reload atom, type Ctrl + Option + Cmd + L (on a Mac)
+
+# Add MS-Word style key commands and keep togethers
+'atom-text-editor[data-grammar="source asciidoc"]':
+  'cmd-b':	'asciidoc:toggle-bold'
+  'cmd-i':	'asciidoc:toggle-italic'
+  'cmd-shift-k': 'asciidoc:kt-keep-together'
+
+'atom-text-editor[data-grammar="text html basic"]':
+  'cmd-i':	'html:add-emphasis'
+  'cmd-b':	'html:add-strong'
+  'cmd-shift-k': 'htmlbook:kt-keep-together'
+
+# uncomment the following if you want them for markdown files, too
+'atom-text-editor[data-grammar="text md"]':
+  'cmd-b':	'atom-markdown-wrapper:bold'
+  'cmd-i':	'atom-markdown-wrapper:italic'
