@@ -120,23 +120,24 @@ atom.commands.add 'atom-text-editor', 'htmlbook:section-label-number', ->
 ##########################################################################
 
 # Useful functions
-formatText = (selection, markup, editor) ->
+formatText = (selection, markup) ->
   if selection.getText().slice(0,1) == markup and selection.getText().slice(-1) == markup
     selection.insertText(selection.getText().slice(1,-1))
   else
     wrapped = "#{markup}#{selection.getText()}#{markup}"
     selection.insertText(wrapped)
+    # if empty, move cursor to the middle
     if wrapped == "#{markup}#{markup}"
-      editor.moveLeft()
-    else
-      editor.moveLeft(wrapped.length) # go to end of word
-      editor.selectRight(wrapped.length)
+      selection.selectLeft()
+      selection.clear()
 
-wrapAdocTag = (selection, tag) ->
+wrapAdocTag = (selection, tag, selectTag) ->
   wrapped = "[.#{tag}]##{selection.getText()}#"
   selection.insertText(wrapped)
-
-
+  if selectTag == true
+    selection.selectLeft(wrapped.length - 2)
+    selection.clear()
+    selection.selectRight(tag.length)
 
 # Generic add class (which you can modify later)
 atom.commands.add 'atom-text-editor', 'asciidoc:add-inline-class', ->
@@ -145,11 +146,7 @@ atom.commands.add 'atom-text-editor', 'asciidoc:add-inline-class', ->
     if `scope  == '.source.asciidoc'`
       selections = editor.getSelections()
       for selection in selections
-        # yes this is the same function as wrapAdocTag
-        wrapped = "[.class]##{selection.getText()}#"
-        selection.insertText(wrapped)
-        editor.moveLeft(wrapped.length - 2)
-        editor.selectRight(5)
+        wrapAdocTag(selection, "class", true)
 
 # Add a "keep-together" class
 atom.commands.add 'atom-text-editor', 'asciidoc:kt-keep-together', ->
@@ -158,15 +155,14 @@ atom.commands.add 'atom-text-editor', 'asciidoc:kt-keep-together', ->
     if `scope  == '.source.asciidoc'`
       selections = editor.getSelections()
       for selection in selections
-        wrapAdocTag(selection, "keep-together")
+        wrapAdocTag(selection, "keep-together", false)
 
 # Make text italic
 atom.commands.add 'atom-text-editor', 'asciidoc:toggle-italic', ->
   editor = atom.workspace.getActiveTextEditor()
-  scope = editor.getRootScopeDescriptor()
   selections = editor.getSelections()
   for selection in selections
-    formatText(selection, "_", editor)
+    formatText(selection, "_")
 
 # Make text bold
 atom.commands.add 'atom-text-editor', 'asciidoc:toggle-bold', ->
@@ -178,7 +174,7 @@ atom.commands.add 'atom-text-editor', 'asciidoc:toggle-bold', ->
     bold = "*"
   selections = editor.getSelections()
   for selection in selections
-    formatText(selection, bold, editor)
+    formatText(selection, bold)
 
 # Make bold, code, or other text italic
 atom.commands.add 'atom-text-editor', 'asciidoc:force-italic', ->
