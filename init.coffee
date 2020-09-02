@@ -187,6 +187,68 @@ atom.commands.add 'atom-text-editor', 'asciidoc:force-italic', ->
   for selection in selections
     striptext(selection)
 
+# CITATION HELPERS
+# Remove parens
+
+atom.commands.add 'atom-text-editor', 'asciidoc:remove-parentheses', ->
+  editor = atom.workspace.getActiveTextEditor()
+  scope = editor.getRootScopeDescriptor()
+  selections = editor.getSelections()
+  regMatch = /\(|\)/g # match parens
+  striptext = (selection) ->
+    selection.insertText(selection.getText().replace(regMatch, ""))
+  for selection in selections
+    striptext(selection)
+
+atom.commands.add 'atom-text-editor', 'asciidoc:swap-cite-style', ->
+  editor = atom.workspace.getActiveTextEditor()
+  scope = editor.getRootScopeDescriptor()
+  selections = editor.getSelections()
+  r1 = / \(/g # match parens
+  r2 = /\)\:|\)\./g # match parens
+  r3 = /\.\,/g
+  r4 = /\.\./g
+  r5 = /\, Vol\./g
+  striptext = (selection) ->
+    oldtext = selection.getText()
+    replace1 = oldtext.replace(r1, '. ')
+    replace2 = replace1.replace(r2, '.')
+    repl3 = replace2.replace(r3, '.')
+    repl4 = repl3.replace(r4, '.')
+    repl5 = repl4.replace(r5, '')
+    selection.insertText(repl5)
+  for selection in selections
+    striptext(selection)
+
+atom.commands.add 'atom-text-editor', 'asciidoc:swap-cite-number-no-month', ->
+  editor = atom.workspace.getActiveTextEditor()
+  scope = editor.getRootScopeDescriptor()
+  selections = editor.getSelections()
+  r1 = /\, No\. (.*)\,/g # match 32, No. 1/2, 122-136.
+  striptext = (selection) ->
+    oldtext = selection.getText()
+    len = oldtext.length - 1
+    issue = oldtext.substring(6,len)
+    selection.insertText(" (#{issue}):")
+  for selection in selections
+    striptext(selection)
+
+atom.commands.add 'atom-text-editor', 'asciidoc:publisher-swap', ->
+  editor = atom.workspace.getActiveTextEditor()
+  scope = editor.getRootScopeDescriptor()
+  selections = editor.getSelections()
+  striptext = (selection) ->
+    t1 = selection.getText()
+    text = t1.trim()
+    reg = /\,(.*)\./g # select location
+    publisher = text.substring(0,text.search(reg))
+    len = text.length - 1
+    loc = text.substring(text.search(reg)+2,len)
+    newform = "#{loc}: #{publisher}."
+    selection.insertText(newform)
+  for selection in selections
+    striptext(selection)
+
 # If you are having trouble with breaking long inline code sections across
 # lines, use this command and replace `&#x2060` with `&#x200b` where you
 # would like to break the line (mostly works as expected, you may still
