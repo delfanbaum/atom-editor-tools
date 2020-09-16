@@ -267,3 +267,5 @@ atom.commands.add 'atom-text-editor', 'asciidoc:force-passthrough-code-letterbre
       selectionText = selectionArray.join(joiner)
       selectionText = "+++<code>" + selectionText + "</code>+++"
       selection.insertText(selectionText)
+
+# This is a change!
